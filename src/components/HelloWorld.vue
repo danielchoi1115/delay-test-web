@@ -7,6 +7,7 @@
     />
   </q-page>
   Commit test
+  Commit Test 2
 </template>
 
 <style></style>
