@@ -6,6 +6,7 @@
       style="width: 200px; height: 200px"
     />
   </q-page>
+  Commit test
 </template>
 
 <style></style>
