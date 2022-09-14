@@ -34,3 +34,5 @@ pnpm-debug.log*
 .vscode
 .vscode-server
 .vuerc
+.wget-hsts
+.viminfo
