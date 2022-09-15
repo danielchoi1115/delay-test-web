@@ -1,8 +1,8 @@
 <template>
   <div @click="startInterval()">Click Me</div>
-  <p>gravity: {{ grav }}</p>
-  <p>scale: {{ sca }}</p>
-  <p>ball y: {{ ballY }}</p>
+  <p>accY: {{ accY }}</p>
+  <p>speedY: {{ speedY }}</p>
+  <p>ball y: {{ ball_y }}</p>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <BounceHome>
@@ -34,8 +34,8 @@ body {
 import { ref } from 'vue'
 import { BounceHome } from './views'
 import { BouncingBall, BounceFloor, SpeedSlider } from './components'
-import { mapGetters } from 'vuex'
-import { moveBall } from './controllers'
+import { mapGetters, mapState } from 'vuex'
+import { startMoving, resetFrequency } from './controllers'
 export default {
   name: 'LayoutDefault',
 
@@ -45,11 +45,19 @@ export default {
     BounceFloor,
     SpeedSlider,
   },
-  computed: mapGetters({
-    ballY: 'getBallYpx',
-    grav: 'getGravity',
-    sca: 'getScale',
-  }),
+  computed: {
+    ...mapState(['bpm']),
+    ...mapGetters({
+      ball_y: 'getBallY',
+      accY: 'getAccY',
+      speedY: 'getSpeedY',
+    }),
+  },
+  watch: {
+    bpm(newValue, oldValue) {
+      resetFrequency(newValue)
+    },
+  },
   setup() {
     return {
       leftDrawerOpen: ref(false),
@@ -57,9 +65,7 @@ export default {
   },
   methods: {
     startInterval() {
-      setInterval(function () {
-        moveBall()
-      }, 500)
+      startMoving()
     },
   },
 }
