@@ -1,23 +1,37 @@
 <template>
   <div class="q-pa-md">
-    <q-badge color="secondary"> Model: {{ scale }} (0.1 to 3) </q-badge>
-    <q-slider v-model="scale" @change="setScale(scale)" :min="0.1" :max="3" :step="0.1" color="green" />
+    <q-badge color="secondary"> Model: {{ scale }} ({{ min_acc_y }} to {{ max_acc_y }}) </q-badge>
+    <q-slider
+      v-model="scale"
+      @change="setBPM(scale)"
+      :min="min_acc_y"
+      :max="max_acc_y"
+      :step="acc_y_step"
+      color="green"
+    />
   </div>
 </template>
 
 <script>
 import { ref } from 'vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SpeedSlider',
   methods: {
-    setScale: function (scale) {
-      this.$store.commit('setScale', scale)
+    setBPM: function (scale) {
+      this.$store.commit('setBPM', scale)
     },
   },
+  computed: mapGetters({
+    // arrow functions can make the code very succinct!
+    min_acc_y: 'getMinAccY',
+    max_acc_y: 'getMaxAccY',
+    acc_y_step: 'getAccYStep',
+  }),
   setup() {
     return {
-      scale: ref(1),
+      scale: ref(10),
     }
   },
 }
