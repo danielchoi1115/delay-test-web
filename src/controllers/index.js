@@ -1,3 +1,3 @@
-import { moveBall } from './MovementController'
+import { startMoving, resetFrequency } from './MovementController'
 
-export { moveBall }
+export { startMoving, resetFrequency }
