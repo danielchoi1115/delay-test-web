@@ -1,26 +1,30 @@
 import store from '@/store'
 
 function startMoving() {
-  var bpm = store.getters.getBpm
+  var bpm = store.getters.getBPM
   oscillate(bpm)
 }
 
-function oscillate(bpm) {
-  var frequency = getFrequency(bpm)
+function oscillate() {
+  var interval = store.getters.getInterveal
   var current_intv_id = setInterval(function () {
     store.commit('updateAccY')
-  }, frequency)
+    if (store.getters.isAtBottom) {
+      var audio = store.getters.getAudio
+      setTimeout(function () {
+        audio.play()
+      }, interval)
+    }
+  }, interval)
   store.commit('setCurrentIntvID', current_intv_id)
 }
-
-function getFrequency(bpm) {
-  return Math.round(5000 / bpm)
-}
-
-function resetFrequency(bpm) {
+function stopMoving() {
   var current_intv_id = store.getters.getCurrentIntvID
   clearInterval(current_intv_id)
+}
+function resetInterval(bpm) {
+  stopMoving()
   oscillate(bpm)
 }
 
-export { startMoving, oscillate, resetFrequency }
+export { startMoving, oscillate, resetInterval }
