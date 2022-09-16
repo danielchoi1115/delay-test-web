@@ -13,21 +13,23 @@
   box-shadow: 0 0 15px 5px #08f;
   left: 50%;
   top: v-bind('ball_y');
-  transition: all 0.01s linear;
+  transition: v-bind('transition');
 }
 </style>
 <script>
 import { mapGetters } from 'vuex'
-
+import store from '@/store'
 export default {
   name: 'BouncingBall',
   computed: mapGetters({
-    ball_y: 'getBallY',
-    ball_diameter: 'getBallDiameter',
+    ball_y: 'getBallY_px',
+    transition: 'getTransition',
   }),
+  methods: {},
   data() {
     return {
       colorFromScript: 'white',
+      ball_diameter: store.getters.getBallDiameter_px,
     }
   },
 }
