@@ -1,8 +1,10 @@
 <template>
   <div @click="startInterval()">Click Me</div>
+  <div @click="play()">Sound</div>
   <p>accY: {{ accY }}</p>
   <p>speedY: {{ speedY }}</p>
   <p>ball y: {{ ball_y }}</p>
+  <p>avava: {{ a }}</p>
   <q-layout view="lHh Lpr lFf">
     <q-page-container>
       <BounceHome>
@@ -35,7 +37,7 @@ import { ref } from 'vue'
 import { BounceHome } from './views'
 import { BouncingBall, BounceFloor, SpeedSlider } from './components'
 import { mapGetters, mapState } from 'vuex'
-import { startMoving, resetFrequency } from './controllers'
+import { startMoving, resetInterval } from './controllers'
 export default {
   name: 'LayoutDefault',
 
@@ -48,14 +50,15 @@ export default {
   computed: {
     ...mapState(['bpm']),
     ...mapGetters({
-      ball_y: 'getBallY',
-      accY: 'getAccY',
-      speedY: 'getSpeedY',
+      ball_y: 'getBallY_px',
+      accY: 'getAccY_px',
+      speedY: 'getSpeedY_px',
+      a: 'getTransition',
     }),
   },
   watch: {
     bpm(newValue, oldValue) {
-      resetFrequency(newValue)
+      resetInterval(newValue)
     },
   },
   setup() {
@@ -66,6 +69,10 @@ export default {
   methods: {
     startInterval() {
       startMoving()
+    },
+    play() {
+      var audio = new Audio(require('./assets/sound_effect_drumstick.mp3'))
+      audio.play()
     },
   },
 }
