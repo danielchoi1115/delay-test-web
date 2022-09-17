@@ -1,6 +1,6 @@
 <template>
   <div @click="startInterval()">Click Me</div>
-  <div @click="play()">Sound</div>
+  <button @click="resetMoving()">Reset</button>
   <p>accY: {{ accY }}</p>
   <p>speedY: {{ speedY }}</p>
   <p>ball y: {{ ball_y }}</p>
@@ -37,7 +37,7 @@ import { ref } from 'vue'
 import { BounceHome } from './views'
 import { BouncingBall, BounceFloor, SpeedSlider } from './components'
 import { mapGetters, mapState } from 'vuex'
-import { startMoving, resetInterval } from './controllers'
+import { startMoving, resetInterval, resetMoving } from './controllers'
 export default {
   name: 'LayoutDefault',
 
@@ -70,9 +70,8 @@ export default {
     startInterval() {
       startMoving()
     },
-    play() {
-      var audio = new Audio(require('./assets/sound_effect_drumstick.mp3'))
-      audio.play()
+    resetMoving() {
+      resetMoving()
     },
   },
 }
