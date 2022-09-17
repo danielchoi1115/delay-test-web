@@ -1,2 +1,2 @@
-import { startMoving, resetInterval } from './MovementController'
-export { startMoving, resetInterval }
+import { startMoving, resetInterval, resetMoving } from './MovementController'
+export { startMoving, resetInterval, resetMoving }
