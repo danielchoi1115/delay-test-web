@@ -26,7 +26,6 @@ pnpm-debug.log*
 .bash_history
 .browserslistrc
 .cache
-.eslintrc.js
 .gitconfig
 .lesshst
 .npm
