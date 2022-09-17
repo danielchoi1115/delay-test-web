@@ -5,17 +5,21 @@ export default createStore({
     ball_diameter: 50,
     ball_y: 0,
     speed_y: 0,
-    acc_y: 20,
+    acc_y: 420,
     min_bpm: 10,
     max_bpm: 180,
     bpm_step: 10,
-    bottom: 450,
-    bpm: 1,
+    top: 0,
+    bottom: 420,
+    bpm: 10,
     current_intv_id: 0,
   },
   getters: {
     getBallDiameter_px: state => {
       return state.ball_diameter + 'px'
+    },
+    getTop: state => {
+      return state.top
     },
     getBallY: state => {
       return state.ball_y
@@ -54,14 +58,12 @@ export default createStore({
       return state.current_intv_id
     },
     isAtBottom: state => {
-      var y = state.ball_y
-      var b = state.bottom
-      return Math.abs(y - b) / b < 0.1
+      return state.ball_y >= state.bottom
     },
     getAudio: state => {
       return new Audio(require('../assets/sound_effect_drumstick.mp3'))
     },
-    getInterveal: state => {
+    getInterval: state => {
       // calls = total number of  function calls needs for one revolution of the ball.
       var calls = Math.round(-0.5 + 0.5 * Math.sqrt(1 + (8 * state.bottom) / state.acc_y)) * 2
 
@@ -69,7 +71,7 @@ export default createStore({
       return Math.round((1000 * 60) / (state.bpm * calls))
     },
     getTransition: (state, getters) => {
-      var intv = getters.getInterveal
+      var intv = getters.getInterval
       return 'all ' + intv + 'ms linear'
     },
   },
@@ -80,15 +82,23 @@ export default createStore({
     accerateBallY(state) {
       state.speed_y += state.acc_y
     },
-    updateAccY(state) {
+    oscillate(state) {
+      if (state.ball_y == state.top) {
+        state.ball_y = state.bottom
+      } else {
+        state.ball_y = state.top
+      }
+    },
+    updateAccY(state, value) {
       if (state.ball_y >= state.bottom) {
         state.speed_y = -state.speed_y
       } else {
         state.speed_y += state.acc_y
       }
 
+      console.log(state.ball_y + ' ' + value)
       var new_ball_y = state.ball_y + state.speed_y
-      if (new_ball_y > state.bottom) {
+      if (new_ball_y >= state.bottom) {
         new_ball_y = state.bottom
       }
       state.ball_y = new_ball_y
@@ -103,6 +113,9 @@ export default createStore({
     },
     setBPM(state, value) {
       state.bpm = value
+    },
+    resetMoving(state) {
+      state.ball_y = 0
     },
   },
   actions: {},
